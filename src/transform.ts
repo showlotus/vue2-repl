@@ -363,6 +363,19 @@ async function doCompileTemplate(
   //     `$1 ${fnName}`,
   //   )}` + `\n${COMP_IDENTIFIER}.${fnName} = ${fnName}`
 
+  const hasScoped = descriptor.styles.some((s) => s.scoped)
+  if (hasScoped) {
+    const node = document.createElement('div')
+    node.innerHTML = descriptor.template?.content || ''
+    if (node.childElementCount !== 1) {
+      store.errors = ['only one element on template root allowed']
+    }
+    node
+      .querySelectorAll('*')
+      .forEach((el) => el.setAttribute(`data-v-${id}`, ''))
+    code = node.firstElementChild?.outerHTML || ''
+  }
+
   code = `\n${COMP_IDENTIFIER}.template = \`${code}\``
 
   if (isTS) {
