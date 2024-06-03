@@ -272,6 +272,8 @@ async function updatePreview() {
           script.src = 'https://unpkg.com/element-ui/lib/index.js'
           document.head.appendChild(link)
           document.head.appendChild(script)
+        } else {
+          _mount()
         }
         
         // if (window.__ssr_promise__) {
