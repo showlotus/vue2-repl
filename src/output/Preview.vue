@@ -243,9 +243,11 @@ async function updatePreview() {
 
     // if main file is a vue file, mount it.
     if (mainFile.endsWith('.vue')) {
-      codeToEval.push(
-        `import Vue from "vue"\n
+      // TAG App.vue mount
+      codeToEval.push(/* js */ `
+        import Vue from "vue"
         const _mount = () => {
+          console.log('App.vue mounted.')
           const AppComponent = __modules__["${mainFile}"].default
           AppComponent.name = 'Repl'
           AppComponent.el = '#app'
@@ -257,12 +259,27 @@ async function updatePreview() {
           // app.config.errorHandler = e => console.error(e)
           // app.mount('#app')
         }
-        if (window.__ssr_promise__) {
-          window.__ssr_promise__.then(_mount)
-        } else {
-          _mount()
-        }`,
-      )
+        if (!window.Vue) {
+          window.Vue = Vue
+          // 注入 ElementUI
+          const link = document.createElement('link')
+          link.rel = 'stylesheet'
+          link.href = 'https://unpkg.com/element-ui/lib/theme-chalk/index.css'
+          const script = document.createElement('script')
+          script.onload = function() {
+            _mount()
+          }
+          script.src = 'https://unpkg.com/element-ui/lib/index.js'
+          document.head.appendChild(link)
+          document.head.appendChild(script)
+        }
+        
+        // if (window.__ssr_promise__) {
+        //   window.__ssr_promise__.then(_mount)
+        // } else {
+        //   _mount()
+        // }
+      `)
     }
 
     // eval code in sandbox
