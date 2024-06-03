@@ -22,10 +22,17 @@ export default {
     <br />
     <input v-model="value" type="range" min="0" max="100" step="1" />
     <div class="bar" :style="{ background }"></div>
+    <br />
+    <el-button>Default</el-button>
+    <el-button type="primary">Primary</el-button>
+    <el-button type="success">Success</el-button>
+    <el-button type="info">Info</el-button>
+    <el-button type="warning">Warning</el-button>
+    <el-button type="danger">Danger</el-button>
   </div>
 </template>
 
-<style>
+<style scoped>
 .bar {
   margin-top: 10px;
   height: 40px;
