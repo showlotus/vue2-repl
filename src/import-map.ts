@@ -21,9 +21,7 @@ export function useVueImportMap(
         normalizeDefaults(
           productionMode.value ? defaults.runtimeProd : defaults.runtimeDev,
         )) ||
-      `https://cdn.jsdelivr.net/npm/@vue/runtime-dom@${
-        vueVersion.value || currentVersion
-      }/dist/runtime-dom.esm-browser${productionMode.value ? `.prod` : ``}.js`
+      `https://cdn.jsdelivr.net/npm/vue@${vueVersion.value || currentVersion}/dist/vue.esm.browser.js`
 
     // const serverRenderer =
     //   (!vueVersion.value && normalizeDefaults(defaults.serverRenderer)) ||

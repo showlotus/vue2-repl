@@ -1,13 +1,20 @@
 /* eslint-disable @typescript-eslint/prefer-ts-expect-error */
-import { createApp, h, ref, watchEffect } from 'vue'
+import { createApp, h, onMounted, ref, watchEffect } from 'vue'
 import { type OutputModes, Repl, useStore, useVueImportMap } from '../src'
 // @ts-ignore
 import MonacoEditor from '../src/editor/MonacoEditor.vue'
 // @ts-ignore
 import CodeMirrorEditor from '../src/editor/CodeMirrorEditor.vue'
+import Header from '../src/Header.vue'
 
 const window = globalThis.window as any
 window.process = { env: {} }
+
+const setVH = () => {
+  document.documentElement.style.setProperty('--vh', window.innerHeight + `px`)
+}
+window.addEventListener('resize', setVH)
+setVH()
 
 const App = {
   setup() {
@@ -19,8 +26,8 @@ const App = {
       // serverRenderer: import.meta.env.PROD
       //   ? undefined
       //   : `${location.origin}/src/vue-server-renderer-dev-proxy`,
-      runtimeDev:
-        'https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.esm.browser.js',
+      // runtimeDev:
+      //   'https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.esm.browser.js',
     })
     const store = (window.store = useStore(
       {
@@ -48,29 +55,60 @@ const App = {
     //   )
     // }, 1000)
 
-    // store.vueVersion = '2.6.14'
+    const replRef = ref()
+    function reloadPage() {
+      replRef.value?.reload()
+    }
+
+    store.vueVersion = '2.6.14'
     const theme = ref<'light' | 'dark'>('dark')
+    function toggleTheme(isDark: boolean) {
+      theme.value = isDark ? 'dark' : 'light'
+    }
     window.theme = theme
     const previewTheme = ref(false)
     window.previewTheme = previewTheme
 
-    return () =>
-      h(Repl, {
-        store,
-        theme: theme.value,
-        previewTheme: previewTheme.value,
-        editor: MonacoEditor,
-        // layout: 'vertical',
-        ssr: false,
-        sfcOptions: {
-          script: {
-            // inlineTemplate: false
-          },
+    onMounted(() => {
+      const cls = document.documentElement.classList
+      toggleTheme(cls.contains('dark'))
+    })
+
+    return () => {
+      return h(
+        'div',
+        {
+          style: {},
         },
-        showTsConfig: false,
-        // showCompileOutput: false,
-        // showImportMap: false
-      })
+        [
+          h(Header, {
+            store,
+            // ssr: useSSRMode
+            // @toggle-prod="toggleProdMode"
+            // @toggle-ssr="toggleSSR"
+            onReloadPage: reloadPage,
+            onToggleTheme: toggleTheme,
+          }),
+          h(Repl, {
+            ref: replRef,
+            store,
+            theme: theme.value,
+            previewTheme: previewTheme.value,
+            editor: MonacoEditor,
+            // layout: 'vertical',
+            ssr: false,
+            sfcOptions: {
+              script: {
+                // inlineTemplate: false
+              },
+            },
+            showTsConfig: false,
+            // showCompileOutput: false,
+            showImportMap: false,
+          }),
+        ],
+      )
+    }
   },
 }
 
