@@ -6,6 +6,9 @@ import MonacoEditor from '../src/editor/MonacoEditor.vue'
 // @ts-ignore
 import CodeMirrorEditor from '../src/editor/CodeMirrorEditor.vue'
 import Header from '../src/Header.vue'
+import parseScript from '../src/utils/parseScript'
+
+console.log(parseScript(''))
 
 const window = globalThis.window as any
 window.process = { env: {} }
