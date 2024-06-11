@@ -13,11 +13,43 @@ const props = defineProps<{
 async function toggle() {
   expanded.value = !expanded.value
   if (!versions.value) {
-    versions.value = await fetchVersions()
+    // versions.value = await fetchVersions()
+    versions.value = await fetchMirrorVersions()
   }
 }
 
+async function fetchMirrorVersions(): Promise<string[]> {
+  const mirrorRegistry = 'https://registry.npmmirror.com'
+  const { versions } = (await fetch(`${mirrorRegistry}/${props.pkg}`).then(
+    (res) => res.json(),
+  )) as { versions: string[] }
+  let filterRule = (v: string) => true
+  if (props.pkg === 'element-ui') {
+    filterRule = (v) => !v.includes('-') && /^2\.1[0-5]/.test(v)
+  } else if (props.pkg === 'vue') {
+    filterRule = (v) =>
+      !v.includes('-') && (v.startsWith('2.7') || v.startsWith('2.6'))
+  }
+  const sortVersion = (a: string, b: string) => {
+    const aVersions = a.split('.').map(Number)
+    const bVersions = b.split('.').map(Number)
+    for (let i = 0; i < 3; i++) {
+      if (aVersions[i] > bVersions[i]) {
+        return -1
+      } else if (aVersions[i] < bVersions[i]) {
+        return 1
+      }
+    }
+    return 0
+  }
+  const filteredVersions = Object.keys(versions)
+    .filter(filterRule)
+    .sort(sortVersion)
+  return filteredVersions
+}
+
 async function fetchVersions(): Promise<string[]> {
+  console.log(await fetchMirrorVersions())
   const res = await fetch(
     `https://data.jsdelivr.com/v1/package/npm/${props.pkg}`,
   )

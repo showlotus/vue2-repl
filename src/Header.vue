@@ -70,7 +70,7 @@ function toggleDark() {
     </h1>
     <div class="links">
       <VersionSelect
-        v-model="store.typescriptVersion"
+        v-model="store.elementuiVersion"
         pkg="element-ui"
         label="ElementUI Version"
       />

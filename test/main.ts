@@ -64,6 +64,7 @@ const App = {
     }
 
     store.vueVersion = '2.6.14'
+    store.elementuiVersion = '2.15.14'
     const theme = ref<'light' | 'dark'>('dark')
     function toggleTheme(isDark: boolean) {
       theme.value = isDark ? 'dark' : 'light'
@@ -107,7 +108,7 @@ const App = {
             },
             showTsConfig: false,
             // showCompileOutput: false,
-            showImportMap: false,
+            showImportMap: !false,
           }),
         ],
       )

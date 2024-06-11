@@ -43,6 +43,7 @@ export function useStore(
     sfcOptions = ref({}),
     compiler = shallowRef(defaultCompiler),
     vueVersion = ref(null),
+    elementuiVersion = ref(null),
 
     locale = ref(),
     typescriptVersion = ref('latest'),
@@ -75,6 +76,7 @@ export function useStore(
         locale.value,
         dependencyVersion.value,
         vueVersion.value,
+        elementuiVersion.value,
       ],
       () => reloadLanguageTools.value?.(),
       { deep: true },
@@ -346,6 +348,7 @@ export function useStore(
     compiler,
     loading,
     vueVersion,
+    elementuiVersion,
 
     locale,
     typescriptVersion,
@@ -407,6 +410,7 @@ export type StoreState = ToRefs<{
   compiler: typeof defaultCompiler
   /* only apply for compiler-sfc */
   vueVersion: string | null
+  elementuiVersion: string | null
 
   // volar-related
   locale: string | undefined
@@ -444,6 +448,7 @@ export type Store = Pick<
   | 'sfcOptions'
   | 'compiler'
   | 'vueVersion'
+  | 'elementuiVersion'
   | 'locale'
   | 'typescriptVersion'
   | 'dependencyVersion'

@@ -15,13 +15,14 @@ export function useVueImportMap(
 
   const productionMode = ref(false)
   const vueVersion = ref<string | null>(defaults.vueVersion || null)
+  console.log('vueVersion', vueVersion, currentVersion)
   const importMap = computed<ImportMap>(() => {
     const vue =
       (!vueVersion.value &&
         normalizeDefaults(
           productionMode.value ? defaults.runtimeProd : defaults.runtimeDev,
         )) ||
-      `https://cdn.jsdelivr.net/npm/vue@${vueVersion.value || currentVersion}/dist/vue.esm.browser.js`
+      `https://cdn.jsdelivr.net/npm/vue@${vueVersion.value || '2.6.14'}/dist/vue.esm.browser.js`
 
     // const serverRenderer =
     //   (!vueVersion.value && normalizeDefaults(defaults.serverRenderer)) ||
