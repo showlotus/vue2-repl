@@ -9,7 +9,7 @@ async function extractTGZ(arrayBuffer: ArrayBuffer) {
   // 解压 gzip
   const ungzipped = pako.ungzip(new Uint8Array(arrayBuffer))
 
-  console.log(ungzipped)
+  // console.log(ungzipped)
 
   // 解析 tar
   const extract = tar.extract()
@@ -53,13 +53,11 @@ async function readJSFiles(files: Record<string, Blob>) {
   return jsFiles
 }
 
-export async function fetchTgz(module: string, mirror = defaultMirror) {
-  const res = await fetch(`${mirror}/${module}`).then((res) => res.json())
-  const versions = Object.keys(res.versions).filter(
-    (v) => v.indexOf('-') === -1 && v.startsWith('2.6'),
-  )
-
-  const version = versions[0]
+export async function fetchTgz(
+  module: string,
+  version: string,
+  mirror = defaultMirror,
+) {
   const tgzUrl = `${mirror}/${module}/-/${module}-${version}.tgz`
   const arrayBuffer = await fetch(tgzUrl).then((res) => res.arrayBuffer())
   const files = await extractTGZ(arrayBuffer)

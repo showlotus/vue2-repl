@@ -15,6 +15,7 @@ import { PreviewProxy } from './PreviewProxy'
 import { compileModulesForPreview } from './moduleCompiler'
 import type { Props } from '../Repl.vue'
 import { injectKeyStore } from '../../src/types'
+import { fetchTgz } from '../../src/utils/fetchTgz'
 
 const props = defineProps<{ show: boolean; ssr: boolean }>()
 
@@ -192,6 +193,15 @@ async function updatePreview() {
     }
   }
 
+  if (store.elementuiVersion) {
+    console.info(
+      `[Playground] Now using Element-UI version: ${store.elementuiVersion}`,
+    )
+    fetchTgz('element-ui', store.elementuiVersion).then((res) => {
+      console.log(res)
+    })
+  }
+
   try {
     const { mainFile } = store
 
@@ -233,7 +243,7 @@ async function updatePreview() {
     )
 
     const codeToEval = [
-      `window.__modules__ = {};window.__css__ = [];` +
+      /* js */ `window.__modules__ = {};window.__css__ = [];` +
         `if (window.__app__) window.__app__.$destroy();` +
         `document.body.innerHTML = '<div id="app"></div>'`,
       ...modules,

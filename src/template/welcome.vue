@@ -4,6 +4,7 @@ export default {
     return {
       msg: 'Hello World!',
       value: 50,
+      vueVersion: window.Vue.version,
     }
   },
   computed: {
@@ -16,6 +17,7 @@ export default {
 
 <template>
   <div>
+    <h1>Vue - {{ vueVersion }}</h1>
     <h1>{{ msg }}</h1>
     <input v-model="msg" />
     <br />

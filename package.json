@@ -110,7 +110,9 @@
     "vue-tsc": "^2.0.19"
   },
   "dependencies": {
+    "esbuild-plugins-node-modules-polyfill": "^1.6.4",
     "pako": "^2.1.0",
-    "tar-stream": "^3.1.7"
+    "tar-stream": "^3.1.7",
+    "vite-plugin-node-polyfills": "^0.22.0"
   }
 }

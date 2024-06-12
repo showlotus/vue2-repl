@@ -31,6 +31,7 @@ const App = {
       //   : `${location.origin}/src/vue-server-renderer-dev-proxy`,
       // runtimeDev:
       //   'https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.esm.browser.js',
+      vueVersion: '2.6.14',
     })
     const store = (window.store = useStore(
       {
@@ -63,7 +64,7 @@ const App = {
       replRef.value?.reload()
     }
 
-    store.vueVersion = '2.6.14'
+    store.vueVersion = vueVersion.value
     store.elementuiVersion = '2.15.14'
     const theme = ref<'light' | 'dark'>('dark')
     function toggleTheme(isDark: boolean) {
@@ -108,7 +109,7 @@ const App = {
             },
             showTsConfig: false,
             // showCompileOutput: false,
-            showImportMap: !false,
+            showImportMap: false,
           }),
         ],
       )
