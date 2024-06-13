@@ -53,6 +53,20 @@ async function readJSFiles(files: Record<string, Blob>) {
   return jsFiles
 }
 
+// 从解压后的文件中读取目标文件内容
+async function readFiles(files: Record<string, Blob>, targetFiles: string[]) {
+  const resultFiles = {} as Record<string, string>
+
+  for (const fileName of targetFiles) {
+    if (files[fileName]) {
+      const text = await files[fileName].text()
+      resultFiles[fileName] = text
+    }
+  }
+
+  return resultFiles
+}
+
 export async function fetchTgz(
   module: string,
   version: string,
@@ -63,4 +77,17 @@ export async function fetchTgz(
   const files = await extractTGZ(arrayBuffer)
   const jsFiles = await readJSFiles(files)
   return jsFiles
+}
+
+export async function fetchElementUiTgz(version: string) {
+  const module = 'element-ui'
+  const tgzUrl = `${defaultMirror}/${module}/-/${module}-${version}.tgz`
+  const arrayBuffer = await fetch(tgzUrl).then((res) => res.arrayBuffer())
+  const files = await extractTGZ(arrayBuffer)
+  const targetFiles = [
+    'package/lib/index.js',
+    'package/lib/theme-chalk/index.css',
+  ]
+  const totalFiles = await readFiles(files, targetFiles)
+  return totalFiles
 }

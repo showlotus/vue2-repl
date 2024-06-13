@@ -15,7 +15,7 @@ import { PreviewProxy } from './PreviewProxy'
 import { compileModulesForPreview } from './moduleCompiler'
 import type { Props } from '../Repl.vue'
 import { injectKeyStore } from '../../src/types'
-import { fetchTgz } from '../../src/utils/fetchTgz'
+import { fetchElementUiTgz } from '../../src/utils/fetchTgz'
 
 const props = defineProps<{ show: boolean; ssr: boolean }>()
 
@@ -193,15 +193,6 @@ async function updatePreview() {
     }
   }
 
-  if (store.elementuiVersion) {
-    console.info(
-      `[Playground] Now using Element-UI version: ${store.elementuiVersion}`,
-    )
-    fetchTgz('element-ui', store.elementuiVersion).then((res) => {
-      console.log(res)
-    })
-  }
-
   try {
     const { mainFile } = store
 
@@ -251,6 +242,17 @@ async function updatePreview() {
         document.head.insertAdjacentHTML('beforeend', window.__css__.map(s => \`<style css>\${s}</style>\`).join('\\n'))`,
     ]
 
+    let __tgz_files__ = null
+    let __tgz_version__ = null
+    if (store.elementuiVersion) {
+      console.info(
+        `[Playground] Now using Element-UI version: ${store.elementuiVersion}`,
+      )
+
+      __tgz_version__ = store.elementuiVersion
+      __tgz_files__ = await fetchElementUiTgz(store.elementuiVersion)
+    }
+
     // if main file is a vue file, mount it.
     if (mainFile.endsWith('.vue')) {
       // TAG App.vue mount
@@ -269,23 +271,35 @@ async function updatePreview() {
           // app.config.errorHandler = e => console.error(e)
           // app.mount('#app')
         }
+        // TODO 切换 element-ui 版本时，不会重新加载资源
         if (!window.Vue) {
           window.Vue = Vue
-          // 注入 ElementUI
-          const link = document.createElement('link')
-          link.rel = 'stylesheet'
-          link.href = 'https://unpkg.com/element-ui/lib/theme-chalk/index.css'
-          const script = document.createElement('script')
-          script.onload = function() {
+          window.__tgz_files__ = ${JSON.stringify(__tgz_files__)}
+          window.__tgz_version__ = ${JSON.stringify(__tgz_version__)}
+
+          Object.keys(window.__tgz_files__).forEach((filename) => {
+            if (filename.endsWith('.js')) {
+              const script = document.createElement('script')
+              script.setAttribute("path", filename)
+              script.setAttribute("version", window.__tgz_version__)
+              script.innerText = window.__tgz_files__[filename]
+              document.head.appendChild(script)
+            } else if (filename.endsWith('.css')) {
+              const link = document.createElement('style')
+              link.setAttribute("path", filename)
+              link.setAttribute("version", window.__tgz_version__)
+              link.innerText = window.__tgz_files__[filename]
+              document.head.appendChild(link)
+            }
+          })
+
+          setTimeout(() => {
             _mount()
-          }
-          script.src = 'https://unpkg.com/element-ui/lib/index.js'
-          document.head.appendChild(link)
-          document.head.appendChild(script)
+          })
         } else {
           _mount()
         }
-        
+
         // if (window.__ssr_promise__) {
         //   window.__ssr_promise__.then(_mount)
         // } else {
