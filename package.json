@@ -45,6 +45,7 @@
     "dev": "vite",
     "build": "vite build",
     "build-preview": "vite build -c vite.preview.config.ts",
+    "preview": "vite preview",
     "format": "prettier --write .",
     "lint": "eslint --ext .ts,.vue .",
     "typecheck": "vue-tsc --noEmit",

@@ -46,7 +46,8 @@ export function useStore(
     elementUiVersion = ref(null),
 
     locale = ref(),
-    typescriptVersion = ref('latest'),
+    // TAG 不使用 ts
+    typescriptVersion = ref(''),
     dependencyVersion = ref(Object.create(null)),
     reloadLanguageTools = ref(),
   }: Partial<StoreState> = {},
@@ -385,7 +386,7 @@ const tsconfig = {
     target: 'ESNext',
     module: 'ESNext',
     moduleResolution: 'Bundler',
-    allowImportingTsExtensions: true,
+    allowImportingTsExtensions: !true,
   },
   vueCompilerOptions: {
     target: 3.4,

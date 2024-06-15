@@ -5,7 +5,7 @@ import Sun from './icons/Sun.vue'
 import Moon from './icons/Moon.vue'
 import Share from './icons/Share.vue'
 // import Download from './icons/Download.vue'
-import GitHub from './icons/GitHub.vue'
+// import GitHub from './icons/GitHub.vue'
 import Reload from './icons/Reload.vue'
 import VersionSelect from './VersionSelect.vue'
 import type { ReplStore } from './store'
@@ -126,14 +126,15 @@ function toggleDark() {
       >
         <Download />
       </button> -->
-      <a
+      <!-- TODO 替换成 CodeHub -->
+      <!-- <a
         href="https://github.com/vuejs/core/tree/main/packages/sfc-playground"
         target="_blank"
         title="View on GitHub"
         class="github"
       >
         <GitHub />
-      </a>
+      </a> -->
     </div>
   </nav>
 </template>
