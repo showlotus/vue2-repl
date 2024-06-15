@@ -67,8 +67,8 @@ function toggleDark() {
 <template>
   <nav>
     <h1>
-      <!-- <img alt="logo" src="/logo.svg" /> -->
-      <span>Vue SFC Playground</span>
+      <img alt="logo" src="/logo.svg" />
+      <span>AUI Playground</span>
     </h1>
     <div class="links">
       <VersionSelect
@@ -170,7 +170,9 @@ nav {
   --border: #ddd;
   --btn: #666;
   --highlight: #333;
-  --green: #3ca877;
+  /* --green: #3ca877; */
+  --green: #009eff;
+
   --purple: #904cbc;
   --btn-bg: #eee;
 
@@ -193,6 +195,7 @@ nav {
   --border: #383838;
   --highlight: #fff;
   --btn-bg: #333;
+  --green: #00ff9e;
 
   box-shadow: none;
   border-bottom: 1px solid var(--border);

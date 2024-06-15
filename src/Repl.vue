@@ -110,8 +110,10 @@ defineExpose({ reload })
   --border: #ddd;
   --text-light: #888;
   --font-code: Menlo, Monaco, Consolas, 'Courier New', monospace;
-  --color-branding: #42b883;
-  --color-branding-dark: #416f9c;
+  /* --color-branding: #42b883; */
+  /* --color-branding-dark: #416f9c; */
+  --color-branding: #009eff;
+  --color-branding-dark: #00ff9e;
   --header-height: 38px;
 
   height: 100%;
@@ -128,8 +130,10 @@ defineExpose({ reload })
   --bg-soft: #242424;
   --border: #383838;
   --text-light: #aaa;
-  --color-branding: #42d392;
-  --color-branding-dark: #89ddff;
+  /* --color-branding: #42d392; */
+  /* --color-branding-dark: #89ddff; */
+  --color-branding: #00ff9e;
+  --color-branding-dark: #009eff;
 }
 
 .vue-repl button {

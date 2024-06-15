@@ -79,6 +79,7 @@ defineExpose({ reload })
   overflow: hidden;
 }
 .tab-buttons button {
+  height: 100%;
   padding: 0;
   box-sizing: border-box;
 }
@@ -92,7 +93,7 @@ defineExpose({ reload })
   line-height: 20px;
 }
 button.active {
-  color: var(--color-branding-dark);
-  border-bottom: 3px solid var(--color-branding-dark);
+  color: var(--color-branding);
+  border-bottom: 3px solid var(--color-branding);
 }
 </style>

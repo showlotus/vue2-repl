@@ -80,11 +80,11 @@ function createSandbox() {
 
   console.log(
     `%c[Playground] Now using Vue version: ${store.vueVersion}`,
-    'color: #d1313e',
+    'color: #009eff',
   )
   console.log(
     `%c[Playground] Now using Element-UI version: ${store.elementUiVersion}`,
-    'color: #d1313e',
+    'color: #009eff',
   )
 
   sandbox = document.createElement('iframe')
