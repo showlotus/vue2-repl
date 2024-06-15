@@ -24,6 +24,7 @@ const emit = defineEmits([
 
 const { store } = props
 
+// @ts-expect-error
 const currentCommit = '__COMMIT__'
 
 const vueVersion = computed(() => {
@@ -37,6 +38,7 @@ async function setVueVersion(v: string) {
   store.vueVersion = v
 }
 
+// @ts-expect-error
 function resetVueVersion() {
   store.vueVersion = null
 }
@@ -70,7 +72,7 @@ function toggleDark() {
     </h1>
     <div class="links">
       <VersionSelect
-        v-model="store.elementuiVersion"
+        v-model="store.elementUiVersion"
         pkg="element-ui"
         label="ElementUI Version"
       />

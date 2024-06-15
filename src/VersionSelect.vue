@@ -48,6 +48,7 @@ async function fetchMirrorVersions(): Promise<string[]> {
   return filteredVersions
 }
 
+// @ts-expect-error
 async function fetchVersions(): Promise<string[]> {
   console.log(await fetchMirrorVersions())
   const res = await fetch(

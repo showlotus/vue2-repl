@@ -78,6 +78,15 @@ function createSandbox() {
     container.value.removeChild(sandbox)
   }
 
+  console.log(
+    `%c[Playground] Now using Vue version: ${store.vueVersion}`,
+    'color: #d1313e',
+  )
+  console.log(
+    `%c[Playground] Now using Element-UI version: ${store.elementUiVersion}`,
+    'color: #d1313e',
+  )
+
   sandbox = document.createElement('iframe')
   sandbox.setAttribute(
     'sandbox',
@@ -244,13 +253,9 @@ async function updatePreview() {
 
     let __tgz_files__ = null
     let __tgz_version__ = null
-    if (store.elementuiVersion) {
-      console.info(
-        `[Playground] Now using Element-UI version: ${store.elementuiVersion}`,
-      )
-
-      __tgz_version__ = store.elementuiVersion
-      __tgz_files__ = await fetchElementUiTgz(store.elementuiVersion)
+    if (store.elementUiVersion) {
+      __tgz_version__ = store.elementUiVersion
+      __tgz_files__ = await fetchElementUiTgz(store.elementUiVersion)
     }
 
     // if main file is a vue file, mount it.
@@ -271,7 +276,6 @@ async function updatePreview() {
           // app.config.errorHandler = e => console.error(e)
           // app.mount('#app')
         }
-        // TODO 切换 element-ui 版本时，不会重新加载资源
         if (!window.Vue) {
           window.Vue = Vue
           window.__tgz_files__ = ${JSON.stringify(__tgz_files__)}

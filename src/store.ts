@@ -43,7 +43,7 @@ export function useStore(
     sfcOptions = ref({}),
     compiler = shallowRef(defaultCompiler),
     vueVersion = ref(null),
-    elementuiVersion = ref(null),
+    elementUiVersion = ref(null),
 
     locale = ref(),
     typescriptVersion = ref('latest'),
@@ -55,8 +55,10 @@ export function useStore(
   if (!builtinImportMap) {
     ;({ importMap: builtinImportMap, vueVersion } = useVueImportMap({
       vueVersion: vueVersion.value,
+      elementUiVersion: elementUiVersion.value,
     }))
   }
+
   const loading = ref(false)
 
   function applyBuiltinImportMap() {
@@ -76,7 +78,7 @@ export function useStore(
         locale.value,
         dependencyVersion.value,
         vueVersion.value,
-        elementuiVersion.value,
+        elementUiVersion.value,
       ],
       () => reloadLanguageTools.value?.(),
       { deep: true },
@@ -267,7 +269,10 @@ export function useStore(
         delete files[importMapFile]
       }
     }
-    if (vueVersion.value) files._version = vueVersion.value
+    if (vueVersion.value) files._vue_version = vueVersion.value
+    if (elementUiVersion.value) {
+      files._element_ui_version = elementUiVersion.value
+    }
     return '#' + utoa(JSON.stringify(files))
   }
   const deserialize: ReplStore['deserialize'] = (serializedState: string) => {
@@ -275,8 +280,10 @@ export function useStore(
       serializedState = serializedState.slice(1)
     const saved = JSON.parse(atou(serializedState))
     for (const filename in saved) {
-      if (filename === '_version') {
+      if (filename === '_vue_version') {
         vueVersion.value = saved[filename]
+      } else if (filename === '_element_ui_version') {
+        elementUiVersion.value = saved[filename]
       } else {
         setFile(files.value, filename, saved[filename])
       }
@@ -348,7 +355,7 @@ export function useStore(
     compiler,
     loading,
     vueVersion,
-    elementuiVersion,
+    elementUiVersion,
 
     locale,
     typescriptVersion,
@@ -410,7 +417,7 @@ export type StoreState = ToRefs<{
   compiler: typeof defaultCompiler
   /* only apply for compiler-sfc */
   vueVersion: string | null
-  elementuiVersion: string | null
+  elementUiVersion: string | null
 
   // volar-related
   locale: string | undefined
@@ -448,7 +455,7 @@ export type Store = Pick<
   | 'sfcOptions'
   | 'compiler'
   | 'vueVersion'
-  | 'elementuiVersion'
+  | 'elementUiVersion'
   | 'locale'
   | 'typescriptVersion'
   | 'dependencyVersion'

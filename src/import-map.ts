@@ -6,6 +6,7 @@ export function useVueImportMap(
     runtimeProd?: string | (() => string)
     serverRenderer?: string | (() => string)
     vueVersion?: string | null
+    elementUiVersion?: string | null
   } = {},
 ) {
   function normalizeDefaults(defaults?: string | (() => string)) {
@@ -15,8 +16,9 @@ export function useVueImportMap(
 
   const productionMode = ref(false)
   const vueVersion = ref<string | null>(defaults.vueVersion || null)
-  console.log('vueVersion', vueVersion, currentVersion)
+  const elementUiVersion = ref<string | null>(defaults.elementUiVersion || null)
   const importMap = computed<ImportMap>(() => {
+    // TAG 以 CDN 的方式引入 Vue
     const vue =
       (!vueVersion.value &&
         normalizeDefaults(
@@ -34,6 +36,10 @@ export function useVueImportMap(
         vue,
         // 'vue/server-renderer': serverRenderer,
       },
+      dependencies: {
+        vue: vueVersion.value!,
+        'element-ui': elementUiVersion.value!,
+      },
     }
   })
 
@@ -41,6 +47,7 @@ export function useVueImportMap(
     productionMode,
     importMap,
     vueVersion,
+    elementUiVersion,
     defaultVersion: currentVersion,
   }
 }
@@ -48,11 +55,13 @@ export function useVueImportMap(
 export interface ImportMap {
   imports?: Record<string, string | undefined>
   scopes?: Record<string, Record<string, string>>
+  dependencies?: Record<string, string>
 }
 
 export function mergeImportMap(a: ImportMap, b: ImportMap): ImportMap {
   return {
     imports: { ...a.imports, ...b.imports },
     scopes: { ...a.scopes, ...b.scopes },
+    dependencies: { ...a.dependencies, ...b.dependencies },
   }
 }

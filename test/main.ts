@@ -22,7 +22,11 @@ setVH()
 const App = {
   setup() {
     const query = new URLSearchParams(location.search)
-    const { importMap: builtinImportMap, vueVersion } = useVueImportMap({
+    const {
+      importMap: builtinImportMap,
+      vueVersion,
+      elementUiVersion,
+    } = useVueImportMap({
       // runtimeDev: import.meta.env.PROD
       //   ? undefined
       //   : `${location.origin}/src/vue-dev-proxy`,
@@ -32,11 +36,13 @@ const App = {
       // runtimeDev:
       //   'https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.esm.browser.js',
       vueVersion: '2.6.14',
+      elementUiVersion: '2.15.14',
     })
     const store = (window.store = useStore(
       {
         builtinImportMap,
         vueVersion,
+        elementUiVersion,
         showOutput: ref(query.has('so')),
         outputMode: ref((query.get('om') as OutputModes) || 'preview'),
       },
@@ -64,8 +70,8 @@ const App = {
       replRef.value?.reload()
     }
 
-    store.vueVersion = vueVersion.value
-    store.elementuiVersion = '2.15.14'
+    // store.vueVersion = vueVersion.value
+    // store.elementUiVersion = elementUiVersion.value
     const theme = ref<'light' | 'dark'>('dark')
     function toggleTheme(isDark: boolean) {
       theme.value = isDark ? 'dark' : 'light'
