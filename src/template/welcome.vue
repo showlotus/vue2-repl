@@ -36,7 +36,7 @@ export default {
   </div>
 </template>
 
-<style scoped>
+<style>
 .bar {
   margin-top: 10px;
   height: 40px;

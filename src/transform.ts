@@ -365,6 +365,7 @@ async function doCompileTemplate(
 
   const hasScoped = descriptor.styles.some((s) => s.scoped)
   if (hasScoped) {
+    // BUG 通过 template 的方式处理，追加 scope 后，导致无法处理以自闭合方式写入的组件
     const node = document.createElement('div')
     node.innerHTML = descriptor.template?.content || ''
     if (node.childElementCount !== 1) {
