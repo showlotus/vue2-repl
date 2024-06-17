@@ -245,7 +245,7 @@ async function updatePreview() {
     const codeToEval = [
       /* js */ `window.__modules__ = {};window.__css__ = [];` +
         `if (window.__app__) window.__app__.$destroy();` +
-        `document.body.innerHTML = '<div id="app"></div>'`,
+        `document.body.innerHTML = '<div id="app">loading...</div>'`,
       ...modules,
       `document.querySelectorAll('style[css]').forEach(el => el.remove())
         document.head.insertAdjacentHTML('beforeend', window.__css__.map(s => \`<style css>\${s}</style>\`).join('\\n'))`,
@@ -286,13 +286,13 @@ async function updatePreview() {
               const script = document.createElement('script')
               script.setAttribute("path", filename)
               script.setAttribute("version", window.__tgz_version__)
-              script.innerText = window.__tgz_files__[filename]
+              script.innerHTML = window.__tgz_files__[filename]
               document.head.appendChild(script)
             } else if (filename.endsWith('.css')) {
               const link = document.createElement('style')
               link.setAttribute("path", filename)
               link.setAttribute("version", window.__tgz_version__)
-              link.innerText = window.__tgz_files__[filename]
+              link.innerHTML = window.__tgz_files__[filename]
               document.head.appendChild(link)
             }
           })
